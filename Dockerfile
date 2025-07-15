@@ -29,11 +29,23 @@ ADD https://github.com/FFmpeg/FFmpeg.git#$FFMPEG_VERSION /src
 FROM ffmpeg-base AS ffmpeg-builder
 COPY build/ffmpeg.sh /src/build.sh
 RUN bash -x /src/build.sh \
-      --disable-everything \
+      --disable-encoders \
+      --disable-decoders \
+      --disable-filters \
+      --disable-bsfs \
+      --disable-devices \
+      --disable-parsers \
+      --disable-muxers \
       --enable-muxer=mp4 \
+      --enable-muxer=matroska \
       --enable-muxer=webm \
+      --disable-demuxers \
       --enable-demuxer=mp4 \
-      --enable-demuxer=webm
+      --enable-demuxer=matroska \
+      --enable-demuxer=webm \
+      --disable-protocols \
+      --enable-protocol=file \
+      --enable-protocol=https 
 
 # Build ffmpeg.wasm
 FROM ffmpeg-builder AS ffmpeg-wasm-builder
