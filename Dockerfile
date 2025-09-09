@@ -40,8 +40,9 @@ RUN bash -x /src/build.sh \
       --enable-muxer=matroska \
       --enable-muxer=webm \
       --disable-demuxers \
-      --enable-demuxer=mov,mp4,m4a,3gp,3g2,mj2 \
+      --enable-demuxer=mov \
       --enable-demuxer=mp4 \
+      --enable-demuxer=m4a \
       --enable-demuxer=matroska \
       --enable-demuxer=webm \
       --disable-protocols \
