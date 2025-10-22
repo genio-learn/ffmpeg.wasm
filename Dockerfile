@@ -31,6 +31,8 @@ COPY build/ffmpeg.sh /src/build.sh
 RUN bash -x /src/build.sh \
       --disable-encoders \
       --disable-decoders \
+      --enable-decoder=mp3 \
+      --enable-decoder=mp3float \
       --disable-filters \
       --disable-bsfs \
       --disable-devices \
@@ -39,12 +41,16 @@ RUN bash -x /src/build.sh \
       --enable-muxer=mp4 \
       --enable-muxer=matroska \
       --enable-muxer=webm \
+      --enable-muxer=mp3 \
+      --enable-muxer=wav \
       --disable-demuxers \
       --enable-demuxer=mov \
       --enable-demuxer=mp4 \
       --enable-demuxer=m4a \
       --enable-demuxer=matroska \
       --enable-demuxer=webm \
+      --enable-demuxer=mp3 \
+      --enable-demuxer=wav \
       --disable-protocols \
       --enable-protocol=file \
       --enable-protocol=https 
