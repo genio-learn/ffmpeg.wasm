@@ -43,6 +43,7 @@ RUN bash -x /src/build.sh \
       --enable-muxer=webm \
       --enable-muxer=mp3 \
       --enable-muxer=wav \
+      --enable-muxer=ogg \
       --disable-demuxers \
       --enable-demuxer=mov \
       --enable-demuxer=mp4 \
@@ -51,6 +52,7 @@ RUN bash -x /src/build.sh \
       --enable-demuxer=webm \
       --enable-demuxer=mp3 \
       --enable-demuxer=wav \
+      --enable-demuxer=ogg \
       --disable-protocols \
       --enable-protocol=file \
       --enable-protocol=https 
