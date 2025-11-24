@@ -133,9 +133,15 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        additionalLanguages: ['docker'],
       },
     }),
   plugins: [
+    [require.resolve('@easyops-cn/docusaurus-search-local'), {
+      indexDocs: true,
+      indexBlog: true,
+      hashed: true,
+    }],
     [
       "docusaurus-plugin-typedoc",
       {
