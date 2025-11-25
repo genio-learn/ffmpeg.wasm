@@ -20,8 +20,16 @@ ENV FFMPEG_MT=$FFMPEG_MT
 RUN apt-get update && \
       apt-get install -y pkg-config autoconf automake libtool ragel
 
+# Build opus
+FROM emsdk-base AS opus-builder
+ENV OPUS_BRANCH=v1.3.1
+ADD https://github.com/ffmpegwasm/opus.git#$OPUS_BRANCH /src
+COPY build/opus.sh /src/build.sh
+RUN bash -x /src/build.sh
+
 # Base ffmpeg image with dependencies and source code populated.
 FROM emsdk-base AS ffmpeg-base
+COPY --from=opus-builder $INSTALL_DIR $INSTALL_DIR
 RUN embuilder build sdl2 sdl2-mt
 ADD https://github.com/FFmpeg/FFmpeg.git#$FFMPEG_VERSION /src
 
@@ -30,10 +38,19 @@ FROM ffmpeg-base AS ffmpeg-builder
 COPY build/ffmpeg.sh /src/build.sh
 RUN bash -x /src/build.sh \
       --disable-encoders \
+      --enable-libopus \
+      --enable-encoder=libopus \
       --disable-decoders \
       --enable-decoder=mp3 \
       --enable-decoder=mp3float \
+      --enable-decoder=pcm_s16le \
+      --enable-decoder=pcm_f32le \
       --disable-filters \
+      --enable-filter=anull \
+      --enable-filter=aresample \
+      --enable-filter=aformat \
+      --enable-filter=channelmap \
+      --enable-filter=pan \
       --disable-bsfs \
       --disable-devices \
       --disable-parsers \
@@ -44,6 +61,7 @@ RUN bash -x /src/build.sh \
       --enable-muxer=mp3 \
       --enable-muxer=wav \
       --enable-muxer=ogg \
+      --enable-muxer=opus \
       --disable-demuxers \
       --enable-demuxer=mov \
       --enable-demuxer=mp4 \
@@ -63,7 +81,7 @@ COPY src/bind /src/src/bind
 COPY src/fftools /src/src/fftools
 COPY build/ffmpeg-wasm.sh build.sh
 # libraries to link
-ENV FFMPEG_LIBS ""
+ENV FFMPEG_LIBS "-lopus"
 RUN mkdir -p /src/dist/umd && bash -x /src/build.sh \
       ${FFMPEG_LIBS} \
       -o dist/umd/ffmpeg-core.js

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 sudo make prd
-cp packages/core/dist/esm/* ../notes-web/frontend/common/src/assets/ffmpeg/
+cp packages/core/dist/esm/* ../genio/frontend/common/src/assets/ffmpeg/
